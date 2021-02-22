@@ -14,12 +14,13 @@ import java.util.Random;
  * @author sebas
  */
 public class Bingo {
-    ArrayList Lb = new ArrayList();
-    ArrayList Li = new ArrayList();
-    ArrayList Ln = new ArrayList();
-    ArrayList Lg = new ArrayList();
-    ArrayList Lo = new ArrayList();
+    public static ArrayList Lb = new ArrayList();
+    public static ArrayList Li = new ArrayList();
+    public static ArrayList Ln = new ArrayList();
+    public static ArrayList Lg = new ArrayList();
+    public static ArrayList Lo = new ArrayList();
         
+    private int numero = 0;
     boolean bingo = false;
     
     public void ilistas(){
@@ -34,6 +35,7 @@ public class Bingo {
     public void mcartilla(){
         this.glistas();
         System.out.println("-------------");
+        System.out.println(Lb.size());
         for(int i=0; i<this.Lb.size();i++){
             System.out.println("|\t"+this.Lb.get(i)+"\t|\t"+this.Li.get(i)+"\t|\t"+this.Ln.get(i)+"\t|\t"+this.Lg.get(i)+"\t|\t"+this.Lo.get(i)+"\t|\t");
         }
@@ -41,12 +43,32 @@ public class Bingo {
     }
     public void glistas(){
         Random rd = new Random();
+        int arreglo[] = new int[5];
         for(int i=0; i<5;i++){
-            this.Lb.add(rd.nextInt(15));
-            this.Li.add(rd.nextInt(15)+15);
-            this.Ln.add(rd.nextInt(15)+30);
-            this.Lg.add(rd.nextInt(15)+45);
-            this.Lo.add(rd.nextInt(15)+60);
+            
+            int r = rd.nextInt(15);
+            
+            arreglo[i]= r;
+            for(int j =0; j<i;j++){
+                if (r==0){
+                    i--;
+                }
+                else{
+                    if(arreglo[i]==arreglo[j]){
+                        i--;
+                    }
+                }
+            }        
+        
+            
+         
+                this.Lb.add(r);
+                this.Li.add(r+15);
+                this.Ln.add(r+30);
+                this.Lg.add(r+45);
+                this.Lo.add(r+60);
+         
+            
           
         }
     }
@@ -62,7 +84,7 @@ public class Bingo {
         
         String bolilla = bolillas[r.nextInt(5)];
         
-        int numero = r.nextInt(15);
+        numero = r.nextInt(15);
         switch(bolilla){
             case "B":
                 break;
@@ -83,6 +105,7 @@ public class Bingo {
     }
     public static void main(String[] args) {
         Bingo bn = new Bingo();
+        
         bn.ilistas();
         bn.mcartilla();
         bn.bolillas();
@@ -92,5 +115,8 @@ public class Bingo {
         
         
     }
-    
+
+    public int getNumero() {
+        return numero;
+    }
 }
