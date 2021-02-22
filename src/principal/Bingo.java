@@ -112,8 +112,6 @@ public class Bingo {
         
         Bienvenidos b = new Bienvenidos();
         b.setVisible(true);
-        
-        
     }
 
     public int getNumero() {
