@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.TimerTask;
 import javax.swing.ImageIcon;
@@ -18,7 +19,10 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.util.Timer;
+import javax.swing.JOptionPane;
 import principal.Bingo;
+import principal.Bolas;
+import principal.Targetillas;
 
 
 
@@ -27,7 +31,8 @@ import principal.Bingo;
  * @author sebas
  */
 public class Bienvenidos extends JFrame implements ActionListener{
-    
+    private static ArrayList B1= new ArrayList();
+    private static ArrayList BA= new ArrayList();
     private int VBAncho = 1920, VBAlto =1080;
     private int estado=0;
     private int contador=0;
@@ -70,6 +75,7 @@ public class Bienvenidos extends JFrame implements ActionListener{
     private JButton o3;
     private JButton o4;
     private JButton o5;
+    private JButton Bbingo;
     private ImageIcon Ix;
     private ImageIcon Ib1;
     private ImageIcon Ib2;
@@ -96,7 +102,7 @@ public class Bienvenidos extends JFrame implements ActionListener{
     private ImageIcon Io3;
     private ImageIcon Io4;
     private ImageIcon Io5;
-    
+    private ImageIcon Ibingo;
     private ImageIcon IBienvenidos;
     private ImageIcon mostrarI;
     private ImageIcon ocultarI;
@@ -184,7 +190,7 @@ public class Bienvenidos extends JFrame implements ActionListener{
         
     }
     public void crearIcon(){
-        Bingo b = new Bingo();
+        Targetillas b = new Targetillas();
         Ix=new ImageIcon(getClass().getResource("/imagenes/x.jpg"));
         IBienvenidos = new ImageIcon(getClass().getResource("/imagenes/BingoPrincipal.png"));
         mostrarI = new ImageIcon(getClass().getResource("/imagenes/mostrar.png"));
@@ -243,6 +249,35 @@ public class Bienvenidos extends JFrame implements ActionListener{
         Io4 = new ImageIcon(getClass().getResource("/imagenes/Bola"+String.valueOf(num)+".jpg"));
         num = (int) b.Lo.get(5);
         Io5 = new ImageIcon(getClass().getResource("/imagenes/Bola"+String.valueOf(num)+".jpg"));
+        
+        BA.add(b.Lb.get(1));
+        BA.add(b.Lb.get(2));
+        BA.add(b.Lb.get(3));
+        BA.add(b.Lb.get(4));
+        BA.add(b.Lb.get(5));
+        BA.add(b.Li.get(1));
+        BA.add(b.Li.get(2));
+        BA.add(b.Li.get(3));
+        BA.add(b.Li.get(4));
+        BA.add(b.Li.get(5));
+        BA.add(b.Ln.get(1));
+        BA.add(b.Ln.get(2));
+        BA.add(b.Ln.get(3));
+        BA.add(b.Ln.get(4));
+        BA.add(b.Ln.get(5));
+        BA.add(b.Lg.get(1));
+        BA.add(b.Lg.get(2));
+        BA.add(b.Lg.get(3));
+        BA.add(b.Lg.get(4));
+        BA.add(b.Lg.get(5));
+        BA.add(b.Lo.get(1));
+        BA.add(b.Lo.get(2));
+        BA.add(b.Lo.get(3));
+        BA.add(b.Lo.get(4));
+        BA.add(b.Lo.get(5));
+        
+        
+        Ibingo = new ImageIcon(getClass().getResource("/imagenes/Bingo.png"));
     }
     public void crearBotones(){
         Bingo b = new Bingo();
@@ -252,6 +287,13 @@ public class Bienvenidos extends JFrame implements ActionListener{
         mostrarB.setBackground(Color.WHITE);
         mostrarB.setIcon(new ImageIcon(mostrarI.getImage().getScaledInstance(mostrarB.getWidth(), mostrarB.getHeight(), Image.SCALE_AREA_AVERAGING)));
         Pmostrar.add(mostrarB);
+        
+        Bbingo = new JButton();
+        Bbingo.setLayout(null);
+        Bbingo.setBounds(800, 100, 300, 130);
+        Bbingo.setIcon(new ImageIcon(Ibingo.getImage().getScaledInstance(Bbingo.getWidth(), Bbingo.getHeight(), Image.SCALE_AREA_AVERAGING)));
+        this.getContentPane().add(Bbingo);
+        Bbingo.setVisible(false);
         
         ocultarB = new JButton();
         ocultarB.setLayout(null);
@@ -496,12 +538,31 @@ public class Bienvenidos extends JFrame implements ActionListener{
         
         retornar.setActionCommand("retornar");
         retornar.addActionListener(this);
+        
+        Bbingo.setActionCommand("Bbingo");
+        Bbingo.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         if(ae.getActionCommand().equals("mostrarB")){
             RBola.setVisible(true);
+        }
+        else if (ae.getActionCommand().equals("Bbingo")){
+            int con=0;
+            for(int i=0; i<B1.size();i++){
+                for(int j=0; j<BA.size();i++){
+                    if(B1.get(i)==BA.get(j)){
+                        con++;
+                    }
+                }
+            }
+            if(con==25){
+                JOptionPane.showMessageDialog(null, "Felicidades", "Situacion", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Aun no ganas", "Situacion", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         else if (ae.getActionCommand().equals("ocultarB")){
             RBola.setVisible(false);
@@ -529,11 +590,13 @@ public class Bienvenidos extends JFrame implements ActionListener{
                     }
                     else if(estado==2){
                         System.out.println(contador);
-                        Bingo bn = new Bingo();
+                        Bolas bn = new Bolas();
                         bn.bolillas();
                         int num = 0;
                         num = bn.getNumero();
                         girador = new ImageIcon(getClass().getResource("/imagenes/Bola"+String.valueOf(num)+".jpg"));
+                        
+                        B1.add(num);
                         Bolas.setIcon(new ImageIcon(girador.getImage().getScaledInstance(Bolas.getWidth(), Bolas.getHeight(), Image.SCALE_AREA_AVERAGING)));
                         contador =0;
                         timer.cancel();
@@ -550,6 +613,7 @@ public class Bienvenidos extends JFrame implements ActionListener{
             Pmostrar.setVisible(true);
             Pocultar.setVisible(true);
             Ptargeta.setVisible(true);
+            Bbingo.setVisible(true);
             Pjugar.setVisible(false);
         }
         else if (ae.getActionCommand().equals("b1")){
@@ -652,6 +716,7 @@ public class Bienvenidos extends JFrame implements ActionListener{
             o3.setIcon(new ImageIcon(Io3.getImage().getScaledInstance(o3.getWidth()+12, o3.getHeight(), Image.SCALE_AREA_AVERAGING)));
             o4.setIcon(new ImageIcon(Io4.getImage().getScaledInstance(o4.getWidth()+12, o4.getHeight(), Image.SCALE_AREA_AVERAGING)));
             o5.setIcon(new ImageIcon(Io5.getImage().getScaledInstance(o5.getWidth()+12, o5.getHeight(), Image.SCALE_AREA_AVERAGING)));
+            
         }
 
     }
